@@ -1,7 +1,19 @@
 {
   "name": "hono-client-mini",
-  "version": "0.0.1",
+  "version": "1.0.1",
   "description": "hono/client for mini program",
+  "keywords": [
+    "hono",
+    "mini program",
+    "wx-request"
+  ],
+  "github": "https://github.com/horizon0514/hono-client-mini",
+  "author": "horizon0514",
+  "homepage": "https://github.com/horizon0514/hono-client-mini",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/horizon0514/hono-client-mini.git"
+  },
   "publishConfig": {
     "access": "public"
   },
@@ -17,7 +29,7 @@
   "types": "./dist/index.d.ts",
   "scripts": {
     "build-fast": "tsup src/index.ts --format cjs,esm",
-    "build": "pnpm run build-fast -- --dts-resolve",
+    "build": "tsup src/index.ts --format cjs,esm --dts-resolve",
     "test": "vitest run",
     "prepublishOnly": "pnpm run build"
   },
