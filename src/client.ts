@@ -31,12 +31,12 @@ const createProxy = (callback: Callback, path: string[]) => {
   return proxy
 }
 
-type URLSearchParams = Record<string, string | string[]>
+type QueryString = string
 
 class ClientRequestImpl {
   private url: string
   private method: string
-  private queryParams: URLSearchParams | undefined = undefined
+  private queryParams: QueryString | undefined = undefined
   private pathParams: Record<string, string> = {}
   private rBody: BodyInit | FormData | undefined
   private cType: string | undefined = undefined
@@ -106,7 +106,7 @@ class ClientRequestImpl {
     url = replaceUrlParam(url, this.pathParams)
 
     if (this.queryParams) {
-      url = url + '?' + this.queryParams.toString()
+      url = url + '?' + this.queryParams
     }
     methodUpperCase = this.method.toUpperCase()
     const setBody = !(methodUpperCase === 'GET' || methodUpperCase === 'HEAD')
@@ -166,7 +166,10 @@ export const hc = <T extends Hono<any, any, any>>(
           result = replaceUrlParam(url, opts.args[0].param)
         }
         if (opts.args[0].query) {
-          result = result + '?' + buildSearchParams(opts.args[0].query).toString()
+          const queryString = buildSearchParams(opts.args[0].query)
+          if (queryString) {
+            result = result + '?' + queryString
+          }
         }
       }
       result = removeIndexString(result)

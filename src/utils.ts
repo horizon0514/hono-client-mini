@@ -23,24 +23,24 @@ export const replaceUrlParam = (urlString: string, params: Record<string, string
   return urlString
 }
 
-export const buildSearchParams = (query: Record<string, string | string[]>) => {
-  const searchParams = {} as Record<string, string | string[]>
+export const buildSearchParams = (query: Record<string, string | string[] | undefined>) => {
+  const segments: string[] = []
 
-  for (const [k, v] of Object.entries(query)) {
-    if (v === undefined) {
+  for (const [key, value] of Object.entries(query)) {
+    if (value === undefined) {
       continue
     }
 
-    if (Array.isArray(v)) {
-      for (const v2 of v) {
-        searchParams[k] = [...(searchParams[k] || []), v2]
+    if (Array.isArray(value)) {
+      for (const item of value) {
+        segments.push(`${encodeURIComponent(key)}=${encodeURIComponent(item)}`)
       }
     } else {
-      searchParams[k] = v
+      segments.push(`${encodeURIComponent(key)}=${encodeURIComponent(value)}`)
     }
   }
 
-  return searchParams
+  return segments.join('&')
 }
 
 export const replaceUrlProtocol = (urlString: string, protocol: 'ws' | 'http') => {
